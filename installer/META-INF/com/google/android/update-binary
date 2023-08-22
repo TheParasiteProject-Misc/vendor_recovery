@@ -851,7 +851,9 @@ Main() {
 		F=1
 	elif [ "$BOOTMODE" = "true" ]; then
 	    F=1
-	    if [ -d "$EXTERNAL_STORAGE" ]; then
+	    if [ -d /persist ]; then
+	       internal_SD="/persist"
+	    elif [ -d "$EXTERNAL_STORAGE" ]; then
 	       internal_SD="$EXTERNAL_STORAGE"
 	    elif [ -d /storage/emulated/0 ]; then
 	       internal_SD="/storage/emulated/0"

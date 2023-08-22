@@ -696,16 +696,15 @@ local TDT=$(date "+%d %B %Y")
   # delete the magisk addon zips ?
   if [ "$FOX_DELETE_MAGISK_ADDON" = "1" ]; then
      echo -e "${GREEN}-- Deleting the magisk addon zips ...${NC}"
-     rm -f $FOX_TMP_WORKING_DIR/persist/Fox/FoxFiles/Magisk.zip
-     rm -f $FOX_TMP_WORKING_DIR/persist/Fox/FoxFiles/unrootmagisk.zip
-     rm -f $FOX_TMP_WORKING_DIR/persist/Fox/FoxFiles/Magisk_uninstall.zip
+     rm -f $FOX_TMP_WORKING_DIR/persist/Fox/FoxFiles/Magisk.apk
+     rm -f $FOX_TMP_WORKING_DIR/persist/Fox/FoxFiles/uninstall.zip
   fi
 
   # are we using a specific magisk zip?
   if [ -n "$FOX_USE_SPECIFIC_MAGISK_ZIP" ]; then
      if [ -e $FOX_USE_SPECIFIC_MAGISK_ZIP ]; then
         echo -e "${WHITEONGREEN}-- Using magisk zip: \"$FOX_USE_SPECIFIC_MAGISK_ZIP\" ${NC}"
-        $CP -pf $FOX_USE_SPECIFIC_MAGISK_ZIP $FOX_TMP_WORKING_DIR/persist/Fox/FoxFiles/Magisk.zip
+        $CP -pf $FOX_USE_SPECIFIC_MAGISK_ZIP $FOX_TMP_WORKING_DIR/persist/Fox/FoxFiles/Magisk.apk
      else
         echo -e "${WHITEONRED}-- I cannot find \"$FOX_USE_SPECIFIC_MAGISK_ZIP\"! Using the default.${NC}"
      fi
@@ -1407,7 +1406,7 @@ if [ "$FOX_VENDOR_CMD" = "Fox_Before_Recovery_Image" ]; then
 #########################################################################################
   
   # Get Magisk version
-  tmp1=$FOX_VENDOR_PATH/FoxFiles/Magisk.zip
+  tmp1=$FOX_VENDOR_PATH/FoxFiles/Magisk.apk
   if [ -n "$FOX_USE_SPECIFIC_MAGISK_ZIP" -a -e "$FOX_USE_SPECIFIC_MAGISK_ZIP" ]; then
      tmp1=$FOX_USE_SPECIFIC_MAGISK_ZIP
   fi

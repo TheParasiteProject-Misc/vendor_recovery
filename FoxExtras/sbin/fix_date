@@ -20,11 +20,11 @@ else
    date_cmd="date"
 fi
 
-# copy the ROM version to /sdcard/Fox/
-if [ ! -f /sdcard/Fox/fox_fix_date ]; then 
-   mkdir -p /sdcard/Fox/
-   cp -a /FFiles/fox_fix_date /sdcard/Fox/
-   chmod 0755 /sdcard/Fox/fox_fix_date
+# copy the ROM version to /persist/Fox/
+if [ ! -f /persist/Fox/fox_fix_date ]; then 
+   mkdir -p /persist/Fox/
+   cp -a /FFiles/fox_fix_date /persist/Fox/
+   chmod 0755 /persist/Fox/fox_fix_date
 fi
 
 # process the arguments

@@ -31,7 +31,7 @@
 SCRIPT_LASTMOD_DATE="20230817"
 C="/tmp_cust"
 LOG="/tmp/recovery.log"
-LOG2="/sdcard/foxstart.log"
+LOG2="/persist/foxstart.log"
 DEBUG="0"  	  # enable for more debug messages
 VERBOSE_DEBUG="0" # enable for really verbose debug messages
 SYS_ROOT="0"	  # do we have system_root?
@@ -72,7 +72,7 @@ if [ "$VERBOSE_DEBUG" = "1" ]; then
    set -o xtrace
 fi
 
-# extra logs to /sdcard/foxstart.log
+# extra logs to /persist/foxstart.log
 extralog() {
  [ "$VERBOSE_DEBUG" != "1" ] && return
  local D=$(date)
@@ -82,8 +82,8 @@ extralog() {
  echo "[$D]:= $@" >> $LOG2
 
  # copy also the main logs
- cp $LOG /sdcard/
- [ ! -f /sdcard/dmesg.log ] && cp -a /tmp/dmesg.log /sdcard/
+ cp $LOG /persist/
+ [ ! -f /persist/dmesg.log ] && cp -a /tmp/dmesg.log /persist/
 }
 
 # partition mountpoints
@@ -495,7 +495,7 @@ local fox_cfg="$ETC_DIR/fox.cfg"
    $SETPROP ro.orangefox.sar "$SAR"
    $SETPROP ro.orangefox.kernel "$OPS"
 
-   local fox_home="/sdcard/Fox"
+   local fox_home="/persist/Fox"
    if [ "$FOX_USE_DATA_RECOVERY_FOR_SETTINGS" = "1" ]; then
    	fox_home="/data/recovery/Fox"
    fi

@@ -82,9 +82,15 @@ Main() {
 
 	# install the theme	
 	ui_print "- Installing $THEME_NAME ..."
-	local internal_SD="/sdcard"
+	local internal_SD="/persist"
 	local F=$(is_mounted "$internal_SD")
 	[ "$F" = "0" ] && mount $internal_SD
+	F=$(is_mounted "$internal_SD")
+	[ "$F" = "0" ] && {
+	   internal_SD="$EXTERNAL_STORAGE"
+	   [ -z "$internal_SD" ] && internal_SD="/sdcard"
+	   mount $internal_SD
+	}
 	F=$(is_mounted "$internal_SD")
 	[ "$F" = "0" ] && {
 	   internal_SD="$EXTERNAL_STORAGE"

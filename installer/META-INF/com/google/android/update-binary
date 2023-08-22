@@ -789,7 +789,7 @@ local Is_ABD="0"
 # reset settings to default
 Reset_Settings() {
 local F="$1"
-	[ -z "$F" ] && F=/sdcard
+	[ -z "$F" ] && F=/persist
 	local FOX=$F/Fox
 	ui_print "- Removing old OrangeFox configuration files ..."
 	rm -rf $FOX/.bin.
@@ -863,8 +863,14 @@ Main() {
 	       F=0
 	    fi
 	else
-	    internal_SD="/sdcard"
+	    internal_SD="/persist"
 	    mount_part "$internal_SD"
+	    F=$(is_mounted "$internal_SD")
+	    [ "$F" = "0" ] && {
+	   	internal_SD="/sdcard"
+	   	mount_part "$internal_SD"
+	   	F=$(is_mounted "$internal_SD")
+	    }
 	    F=$(is_mounted "$internal_SD")
 	    [ "$F" = "0" ] && {
 	   	internal_SD="$EXTERNAL_STORAGE"
@@ -878,7 +884,7 @@ Main() {
 	   ui_print "- internal_SD=$internal_SD"
 	   rm -rf "$internal_SD/Fox/FoxFiles"
    	   rm -f "$internal_SD/Fox/.wolfs"
-   	   package_extract_dir "sdcard" "$internal_SD"
+   	   package_extract_dir "persist" "$internal_SD"
    	} 
 
 # Prevent the stock recovery from replacing this recovery

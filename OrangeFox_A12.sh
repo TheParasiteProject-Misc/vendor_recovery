@@ -522,7 +522,7 @@ local TDT=$(date "+%d %B %Y")
   cd $FOX_TMP_WORKING_DIR
 
   # create some others
-  mkdir -p $FOX_TMP_WORKING_DIR/sdcard/Fox
+  mkdir -p $FOX_TMP_WORKING_DIR/persist/Fox
   mkdir -p $FOX_TMP_WORKING_DIR/META-INF/debug
 
   # copy busybox
@@ -565,12 +565,12 @@ local TDT=$(date "+%d %B %Y")
   $CP -pr $INST_DIR/* .
 
   # copy FoxFiles/ to sdcard/Fox/
-  $CP -a $FILES_DIR/ sdcard/Fox/
+  $CP -a $FILES_DIR/ persist/Fox/
 
-  # copy any custom bin files to /sdcard/Fox/bin/ ?
+  # copy any custom bin files to /persist/Fox/bin/ ?
   if [ "$(enabled $FOX_CUSTOM_BINS_TO_SDCARD)" = "1" -a -d "$FOX_BIN_tmp/bin" ]; then
      chmod +x $FOX_BIN_tmp/bin/*
-     $CP -a $FOX_BIN_tmp/ sdcard/Fox/
+     $CP -a $FOX_BIN_tmp/ persist/Fox/
      rm -rf $FOX_BIN_tmp
   fi
 
@@ -675,7 +675,7 @@ local TDT=$(date "+%d %B %Y")
      sed -i -e "s/^FOX_VANILLA_BUILD=.*/FOX_VANILLA_BUILD=\"1\"/" $F
   fi
 
-  # use /data/recovery/Fox/ instead of /sdcard/Fox/ ?
+  # use /data/recovery/Fox/ instead of /persist/Fox/ ?
   if [ "$FOX_USE_DATA_RECOVERY_FOR_SETTINGS" = "1" ]; then
      echo -e "${RED}-- This build will use /data/recovery/ for its internal settings ... ${NC}"
      sed -i -e "s/^FOX_USE_DATA_RECOVERY_FOR_SETTINGS=.*/FOX_USE_DATA_RECOVERY_FOR_SETTINGS=\"1\"/" $F
@@ -690,22 +690,22 @@ local TDT=$(date "+%d %B %Y")
   # omit AromaFM ?
   if [ "$FOX_DELETE_AROMAFM" = "1" ]; then
      echo -e "${GREEN}-- Deleting AromaFM ...${NC}"
-     rm -rf $FOX_TMP_WORKING_DIR/sdcard/Fox/FoxFiles/AromaFM
+     rm -rf $FOX_TMP_WORKING_DIR/persist/Fox/FoxFiles/AromaFM
   fi
 
   # delete the magisk addon zips ?
   if [ "$FOX_DELETE_MAGISK_ADDON" = "1" ]; then
      echo -e "${GREEN}-- Deleting the magisk addon zips ...${NC}"
-     rm -f $FOX_TMP_WORKING_DIR/sdcard/Fox/FoxFiles/Magisk.zip
-     rm -f $FOX_TMP_WORKING_DIR/sdcard/Fox/FoxFiles/unrootmagisk.zip
-     rm -f $FOX_TMP_WORKING_DIR/sdcard/Fox/FoxFiles/Magisk_uninstall.zip
+     rm -f $FOX_TMP_WORKING_DIR/persist/Fox/FoxFiles/Magisk.zip
+     rm -f $FOX_TMP_WORKING_DIR/persist/Fox/FoxFiles/unrootmagisk.zip
+     rm -f $FOX_TMP_WORKING_DIR/persist/Fox/FoxFiles/Magisk_uninstall.zip
   fi
 
   # are we using a specific magisk zip?
   if [ -n "$FOX_USE_SPECIFIC_MAGISK_ZIP" ]; then
      if [ -e $FOX_USE_SPECIFIC_MAGISK_ZIP ]; then
         echo -e "${WHITEONGREEN}-- Using magisk zip: \"$FOX_USE_SPECIFIC_MAGISK_ZIP\" ${NC}"
-        $CP -pf $FOX_USE_SPECIFIC_MAGISK_ZIP $FOX_TMP_WORKING_DIR/sdcard/Fox/FoxFiles/Magisk.zip
+        $CP -pf $FOX_USE_SPECIFIC_MAGISK_ZIP $FOX_TMP_WORKING_DIR/persist/Fox/FoxFiles/Magisk.zip
      else
         echo -e "${WHITEONRED}-- I cannot find \"$FOX_USE_SPECIFIC_MAGISK_ZIP\"! Using the default.${NC}"
      fi
@@ -714,7 +714,7 @@ local TDT=$(date "+%d %B %Y")
   # OF_initd
   if [ "$FOX_DELETE_INITD_ADDON" = "1" ]; then
      echo -e "${GREEN}-- Deleting the initd addon ...${NC}"
-     rm -f $FOX_TMP_WORKING_DIR/sdcard/Fox/FoxFiles/OF_initd*.zip
+     rm -f $FOX_TMP_WORKING_DIR/persist/Fox/FoxFiles/OF_initd*.zip
   else
      echo -e "${GREEN}-- Copying the initd addon ...${NC}"
   fi
@@ -900,7 +900,7 @@ local tmp1
 local tmp2
 local ramdisk_sbindir=$FOX_RAMDISK/sbin
 local ramdisk_sbindir_10=$FOX_RAMDISK/$RAMDISK_SYSTEM_BIN
-local sdcard_bin=/sdcard/Fox/FoxFiles/bin
+local sdcard_bin=/persist/Fox/FoxFiles/bin
 local mksync="3"
 
   if [ "$(enabled $FOX_CUSTOM_BINS_TO_SDCARD)" != "1" ]; then
@@ -1199,9 +1199,9 @@ if [ "$FOX_VENDOR_CMD" = "Fox_Before_Recovery_Image" ]; then
         if [ -z "$(cat $FOX_RAMDISK/$RAMDISK_SYSTEM_ETC/bash/bashrc | grep OrangeFox)" ]; then
            echo " " >> "$FOX_RAMDISK/$RAMDISK_SYSTEM_ETC/bash/bashrc"
            echo "# OrangeFox" >> "$FOX_RAMDISK/$RAMDISK_SYSTEM_ETC/bash/bashrc"
-           echo '[ -f /sdcard/Fox/fox.bashrc ] && source /sdcard/Fox/fox.bashrc' >> "$FOX_RAMDISK/$RAMDISK_SYSTEM_ETC/bash/bashrc"
+           echo '[ -f /persist/Fox/fox.bashrc ] && source /persist/Fox/fox.bashrc' >> "$FOX_RAMDISK/$RAMDISK_SYSTEM_ETC/bash/bashrc"
         fi
-        echo '[ ! -f /sdcard/Fox/fox.bashrc -a -f /FFiles/fox.mkshrc ] && source /sdcard/Fox/fox.mkshrc' >> "$FOX_RAMDISK/$RAMDISK_SYSTEM_ETC/bash/bashrc"
+        echo '[ ! -f /persist/Fox/fox.bashrc -a -f /FFiles/fox.mkshrc ] && source /persist/Fox/fox.mkshrc' >> "$FOX_RAMDISK/$RAMDISK_SYSTEM_ETC/bash/bashrc"
      else
         rm -f $FOX_RAMDISK/$RAMDISK_SBIN/bash
         $CP -pf $FOX_VENDOR_PATH/Files/bash $FOX_RAMDISK/$RAMDISK_SBIN/bash
